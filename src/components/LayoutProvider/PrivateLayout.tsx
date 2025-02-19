@@ -10,7 +10,9 @@ import {
   Menu,
   MenuItem,
   Toolbar,
+  Typography,
 } from "@mui/material";
+import Image from "next/image";
 import { useState } from "react";
 import SidebarMenuList from "../shared/SidebarMenuList";
 
@@ -50,8 +52,19 @@ export default function PrivateLayout({
           },
         }}
       >
+        <Typography
+          sx={{
+            color: "#919EAB",
+            paddingX: 2,
+            fontWeight: 600,
+            mt: 2,
+          }}
+        >
+          Overview
+        </Typography>
         <SidebarMenuList />
       </Drawer>
+
       <Drawer
         variant="permanent"
         sx={{
@@ -64,7 +77,18 @@ export default function PrivateLayout({
           },
         }}
       >
-        <Toolbar />
+        <Box sx={{ padding: 2 }}>
+          <Image src={"/logo.png"} width={40} height={40} alt="logo" />
+        </Box>
+        <Typography
+          sx={{
+            color: "#919EAB",
+            paddingX: 2,
+            fontWeight: 600,
+          }}
+        >
+          Overview
+        </Typography>
         <SidebarMenuList />
       </Drawer>
 
@@ -75,13 +99,13 @@ export default function PrivateLayout({
           sx={{
             width: { sm: `calc(100% - ${drawerWidth}px)` },
             ml: { sm: `${drawerWidth}px` },
+            background: "white",
+            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
           }}
         >
           <Toolbar
             sx={{
-              justifyContent: "flex-end",
-              background: "white",
-              boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
+              justifyContent: "space-between",
             }}
           >
             <IconButton
@@ -89,18 +113,12 @@ export default function PrivateLayout({
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ display: { sm: "none" } }}
+              sx={{ visibility: { sm: "hidden" }, color: "black" }}
             >
               <MenuIcon />
             </IconButton>
 
-            <IconButton
-              sx={{
-                justifySelf: "flex-end",
-              }}
-              onClick={handleMenuOpen}
-              color="inherit"
-            >
+            <IconButton onClick={handleMenuOpen} color="inherit">
               <Avatar alt="User" src="/user.jpg" />
             </IconButton>
 
