@@ -14,6 +14,7 @@
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
     "@iconify/react": "^5.2.0",
+    "@mui/icons-material": "^6.4.5",
     "@mui/material": "^6.4.4",
     "@mui/material-nextjs": "next",
     "lodash": "^4.17.21",
