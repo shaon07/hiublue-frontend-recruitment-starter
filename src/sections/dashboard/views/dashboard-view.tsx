@@ -2,6 +2,7 @@
 
 import Charts from "@/components/shared/Charts";
 import MultipleSelect from "@/components/shared/MultipleSelect";
+import OfferList from "@/components/shared/OfferList";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 
 export default function DashboardView() {
@@ -87,6 +88,14 @@ export default function DashboardView() {
         }}
       >
         <Charts />
+      </Box>
+
+      <Box
+        sx={{
+          mt: 3,
+        }}
+      >
+        <OfferList />
       </Box>
     </Box>
   );

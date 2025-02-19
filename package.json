@@ -17,6 +17,7 @@
     "@mui/icons-material": "^6.4.5",
     "@mui/material": "^6.4.4",
     "@mui/material-nextjs": "next",
+    "@mui/x-data-grid": "^7.27.0",
     "apexcharts": "^4.5.0",
     "lodash": "^4.17.21",
     "next": "^15.0.0",
