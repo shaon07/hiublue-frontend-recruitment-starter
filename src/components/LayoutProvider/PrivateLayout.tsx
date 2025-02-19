@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import {
   AppBar,
@@ -13,7 +14,8 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import SidebarMenuList from "../shared/SidebarMenuList";
 
 const drawerWidth = 240;
@@ -23,6 +25,9 @@ export default function PrivateLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
+  console.log(isAuthenticated);
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -37,6 +42,14 @@ export default function PrivateLayout({
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/login");
+    }
+  }, [isAuthenticated, router]);
+
+  if (!isAuthenticated) return null;
 
   return (
     <Box sx={{ display: "flex" }}>
