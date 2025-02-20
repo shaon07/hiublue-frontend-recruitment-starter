@@ -1,28 +1,61 @@
-"use client";
-import { CalendarMonth } from "@mui/icons-material";
+import useCreateOffer from "@/services/useCreateOfferApi";
+import useUserListApi from "@/services/useUserListApi";
 import {
+  Autocomplete,
   Box,
   Button,
   Checkbox,
   Divider,
   FormControlLabel,
   InputAdornment,
-  MenuItem,
   Radio,
   RadioGroup,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useState } from "react";
 
 export default function OfferForm() {
+  const [user, setUser] = useState("");
+  const { users, loading, error } = useUserListApi(user);
+  const [selectedUser, setSelectedUser] = useState<{
+    value: any;
+    label: any;
+  } | null>(null);
   const [planType, setPlanType] = useState("monthly");
+  const [expired, setExpired] = useState("");
+  const [price, setPrice] = useState("");
   const [additions, setAdditions] = useState({
-    refundable: true,
-    onDemand: false,
+    refundable: false,
+    on_demand: false,
     negotiable: false,
   });
+
+  const options =
+    users?.map((user) => {
+      return { value: String(user.id), label: user.user_name };
+    }) || [];
+
+  // Using the useCreateOffer hook
+  const { createOffer, isLoading, error: apiError, success } = useCreateOffer();
+
+  const handleSubmit = async () => {
+    if (selectedUser) {
+      const offerData = {
+        plan_type: planType,
+        additions: Object.entries(additions)
+          .filter(([key, value]) => value)
+          .map(([key]) => key),
+        user_id: selectedUser.value,
+        expired: expired,
+        price: parseFloat(price),
+      };
+      await createOffer(offerData);
+    }
+  };
 
   return (
     <Box
@@ -69,7 +102,7 @@ export default function OfferForm() {
               onChange={(e) => setPlanType(e.target.value)}
             >
               <FormControlLabel
-                value="payg"
+                value="pay_as_you_go"
                 control={<Radio />}
                 label="Pay As You Go"
               />
@@ -86,6 +119,7 @@ export default function OfferForm() {
             </RadioGroup>
           </Box>
 
+          {/* Additions Section */}
           <Box>
             <Typography variant="subtitle2">Additions</Typography>
             <div className="flex space-x-4">
@@ -108,15 +142,19 @@ export default function OfferForm() {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={additions.onDemand}
+                    checked={additions.on_demand}
                     onChange={(e) =>
-                      setAdditions({ ...additions, onDemand: e.target.checked })
+                      setAdditions({
+                        ...additions,
+                        on_demand: e.target.checked,
+                      })
                     }
                     size="small"
                   />
                 }
                 label="On demand"
               />
+
               <FormControlLabel
                 control={
                   <Checkbox
@@ -135,44 +173,54 @@ export default function OfferForm() {
             </div>
           </Box>
 
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 1,
-            }}
-          >
+          {/* User Section */}
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
             <Typography variant="subtitle2">User</Typography>
-            <Select fullWidth value="jason" className="mt-1" size="small">
-              <MenuItem value="jason">Jason Momoa</MenuItem>
-              <MenuItem value="user2">Other User</MenuItem>
-            </Select>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 1,
-            }}
-          >
-            <Typography variant="subtitle2">Expired</Typography>
-            <TextField
-              fullWidth
-              variant="outlined"
-              value="03 May 2023"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <CalendarMonth className="text-gray-500" />
-                  </InputAdornment>
-                ),
+            <Autocomplete
+              onChange={(event, newValue) => {
+                setSelectedUser(newValue);
               }}
-              className="mt-1"
-              size="small"
+              inputValue={user}
+              onInputChange={(event, newInputValue) => {
+                setUser(newInputValue);
+              }}
+              options={options}
+              getOptionLabel={(option) => option.label}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Search User"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  error={!!error}
+                  helperText={error}
+                />
+              )}
             />
           </Box>
 
+          {/* Expiry Date Section */}
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            <Typography variant="subtitle2">Expired</Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Basic date picker"
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: "small",
+                    variant: "outlined",
+                  },
+                }}
+                onChange={(date) =>
+                  setExpired(String(date?.format("YYYY-MM-DD")))
+                }
+              />
+            </LocalizationProvider>
+          </Box>
+
+          {/* Price Section */}
           <Box
             sx={{
               display: "flex",
@@ -190,6 +238,7 @@ export default function OfferForm() {
                   <InputAdornment position="start">$</InputAdornment>
                 ),
               }}
+              onChange={(e) => setPrice(e.target.value)}
               className="mt-1"
               size="small"
             />
@@ -197,6 +246,7 @@ export default function OfferForm() {
         </Box>
       </Box>
 
+      {/* Submit Button */}
       <Box
         sx={{
           alignSelf: "flex-end",
@@ -209,10 +259,24 @@ export default function OfferForm() {
             backgroundColor: "black",
             color: "white",
           }}
+          onClick={handleSubmit}
+          disabled={isLoading}
         >
-          Send Offer
+          {isLoading ? "Sending Offer..." : "Send Offer"}
         </Button>
       </Box>
+
+      {/* Error or Success Messages */}
+      {apiError && (
+        <Typography color="error" sx={{ textAlign: "center", marginTop: 2 }}>
+          {apiError}
+        </Typography>
+      )}
+      {success && (
+        <Typography color="success" sx={{ textAlign: "center", marginTop: 2 }}>
+          Offer created successfully!
+        </Typography>
+      )}
     </Box>
   );
 }
