@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    const auth = localStorage.getItem("auth") === "true";
+    const auth = !!localStorage.getItem("token");
     setIsAuthenticated(auth);
   }, []);
 
@@ -36,7 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [isAuthenticated, pathname, router]);
 
   const login = () => {
-    localStorage.setItem("auth", "true");
+    localStorage.setItem("token", "true");
     setIsAuthenticated(true);
     router.push("/");
   };
