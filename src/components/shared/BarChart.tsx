@@ -4,20 +4,44 @@ import dynamic from "next/dynamic";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-export default function BarChart() {
+interface WebsiteVisits {
+  monday: { desktop: number; mobile: number };
+  tuesday: { desktop: number; mobile: number };
+  wednesday: { desktop: number; mobile: number };
+  thursday: { desktop: number; mobile: number };
+  friday: { desktop: number; mobile: number };
+  saturday: { desktop: number; mobile: number };
+  sunday: { desktop: number; mobile: number };
+}
+
+interface BarChartProps {
+  website_visits: WebsiteVisits;
+}
+
+export default function BarChart({ website_visits }: BarChartProps) {
+  const days = Object.keys(website_visits);
+
+  const desktopData = days.map(
+    (day) => website_visits[day as keyof WebsiteVisits].desktop
+  );
+  const mobileData = days.map(
+    (day) => website_visits[day as keyof WebsiteVisits].mobile
+  );
+
   const barOptions: ApexOptions = {
     chart: { type: "bar", toolbar: { show: false } },
     plotOptions: { bar: { horizontal: false, columnWidth: "50%" } },
     dataLabels: { enabled: false },
     colors: ["#2F855A", "#F6AD55"],
     legend: { position: "top", horizontalAlign: "left" },
-    xaxis: { categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] },
+    xaxis: { categories: days },
     yaxis: { labels: { formatter: (val) => `${val}` } },
     grid: { strokeDashArray: 4 },
   };
+
   const barSeries = [
-    { name: "Desktop", data: [40, 60, 25, 45, 50, 70, 90] },
-    { name: "Mobile", data: [30, 45, 40, 35, 20, 15, 55] },
+    { name: "Desktop", data: desktopData },
+    { name: "Mobile", data: mobileData },
   ];
 
   return (

@@ -1,18 +1,18 @@
+import { useAuth } from "@/context/AuthContext";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import * as React from "react";
 
 type SelectProps = {
   onChange?: (value: string) => void;
 };
 
 export default function SelectSmall({ onChange = () => {} }: SelectProps) {
-  const [summery, setSummery] = React.useState("");
+  const { setFilter, filter } = useAuth();
 
   const handleChange = (event: SelectChangeEvent) => {
-    setSummery(event.target.value);
+    setFilter(event.target.value);
     onChange(event.target.value);
   };
 
@@ -22,7 +22,7 @@ export default function SelectSmall({ onChange = () => {} }: SelectProps) {
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"
-        value={summery}
+        value={filter}
         onChange={handleChange}
       >
         <MenuItem value="">

@@ -1,4 +1,3 @@
-// src/hooks/useDashboardData.ts
 import { useState } from "react";
 
 interface DashboardData {

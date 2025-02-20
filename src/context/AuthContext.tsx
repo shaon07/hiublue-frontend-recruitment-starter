@@ -13,12 +13,15 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: () => void;
   logout: () => void;
+  filter: string;
+  setFilter: (filter: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [filter, setFilter] = useState("this-week");
   const router = useRouter();
   const pathname = usePathname();
 
@@ -48,7 +51,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        login,
+        logout,
+        filter,
+        setFilter,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
