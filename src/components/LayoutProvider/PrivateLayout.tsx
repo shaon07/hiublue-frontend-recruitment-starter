@@ -26,8 +26,7 @@ export default function PrivateLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
-  console.log(isAuthenticated);
+  const { isAuthenticated, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -41,6 +40,11 @@ export default function PrivateLayout({
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    logout();
+    handleMenuClose();
   };
 
   useEffect(() => {
@@ -141,11 +145,13 @@ export default function PrivateLayout({
               onClose={handleMenuClose}
             >
               <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-              <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
+
         <Toolbar />
+
         {children}
       </Box>
     </Box>
