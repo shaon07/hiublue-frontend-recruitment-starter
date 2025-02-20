@@ -4,17 +4,21 @@ import dynamic from "next/dynamic";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-export default function LineChart() {
+type ChartProps = {
+  data: Record<string, any>;
+};
+
+export default function LineChart({ data }: ChartProps) {
   const lineOptions: ApexOptions = {
     chart: { type: "line", toolbar: { show: false } },
     stroke: { curve: "smooth", width: 2 },
     dataLabels: { enabled: false },
     colors: ["#000"],
-    xaxis: { categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] },
+    xaxis: { categories: Object.keys(data) },
     yaxis: { labels: { formatter: (val) => `${val}` } },
     grid: { strokeDashArray: 4 },
   };
-  const lineSeries = [{ name: "Offers", data: [10, 30, 50, 45, 70, 90, 60] }];
+  const lineSeries = [{ name: "Offers", data: Object.values(data) }];
 
   return (
     <Card sx={{ flex: 1, p: 2, minWidth: 300 }}>

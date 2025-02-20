@@ -1,16 +1,18 @@
 import { DownStats, UpStats } from "@/components/iconify/iconify";
-import MultipleSelect from "@/components/shared/MultipleSelect";
+import { useAuth } from "@/context/AuthContext";
+
 import { useSummeryApi } from "@/services/useSummeryApi";
 import { formatNumber } from "@/utils";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { useEffect } from "react";
 
 export default function SummeryCardsSection() {
+  const { filter } = useAuth();
   const { data, fetchDashboardData } = useSummeryApi();
 
   useEffect(() => {
-    fetchDashboardData("this-week");
-  }, []);
+    fetchDashboardData(filter);
+  }, [filter]);
 
   const stats = [
     { label: "Total Active Users", key: "active_users" },
@@ -20,25 +22,6 @@ export default function SummeryCardsSection() {
 
   return (
     <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          sx={{
-            color: "black",
-            fontWeight: "bold",
-            fontSize: "20px",
-          }}
-        >
-          Dashboard
-        </Typography>
-
-        <MultipleSelect onChange={(data) => fetchDashboardData(data)} />
-      </Box>
       <Box sx={{ flexGrow: 1, mt: 2 }}>
         <Grid container spacing={3}>
           {stats.map(({ label, key }) => {
