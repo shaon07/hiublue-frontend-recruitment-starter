@@ -79,7 +79,7 @@ export default function PrivateLayout({
         >
           Overview
         </Typography>
-        <SidebarMenuList />
+        <SidebarMenuList onSelect={handleDrawerToggle} />
       </Drawer>
 
       <Drawer

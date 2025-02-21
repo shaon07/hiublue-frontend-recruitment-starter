@@ -32,7 +32,7 @@ export default function SummeryCardsSection() {
               previous > 0 ? ((current - previous) / previous) * 100 : 0;
 
             return (
-              <Grid item xs={12} sm={6} md={4} key={key}>
+              <Grid item xs={24} sm={6} md={4} key={key}>
                 <Card sx={{ width: "100%" }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 14, fontWeight: 600 }}>

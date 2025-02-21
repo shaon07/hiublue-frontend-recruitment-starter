@@ -1,3 +1,4 @@
+"use client";
 import { AuthProvider } from "@/context/AuthContext";
 import ThemeProvider from "@/theme/index";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
