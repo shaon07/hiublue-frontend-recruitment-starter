@@ -12,7 +12,7 @@ export default function OnboardingView() {
         alignItems: "center",
       }}
     >
-      <Box>
+      <Box sx={{ width: "100%", maxWidth: "600px" }}>
         <OfferForm />
       </Box>
     </Box>

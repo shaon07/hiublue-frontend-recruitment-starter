@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface User {
   id: number;
@@ -7,17 +7,22 @@ interface User {
 }
 
 interface UseListUsersProps {
-  page: number;
-  perPage: number;
+  page?: number;
+  perPage?: number;
+  search?: string;
 }
 
-export function useListUsersApi({ page, perPage }: UseListUsersProps) {
+export function useListUsersApi() {
   const [users, setUsers] = useState<User[]>([]);
   const [meta, setMeta] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchUsers = async () => {
+  const fetchUsers = async ({
+    page = 1,
+    perPage = 5,
+    search,
+  }: UseListUsersProps) => {
     setLoading(true);
     setError(null);
 
@@ -31,7 +36,9 @@ export function useListUsersApi({ page, perPage }: UseListUsersProps) {
 
     try {
       const response = await fetch(
-        `https://dummy-1.hiublue.com/api/users?page=${page}&per_page=${perPage}`,
+        `https://dummy-1.hiublue.com/api/users?page=${page}&per_page=${perPage}${
+          search ? `&search=${search}` : ""
+        }`,
         {
           method: "GET",
           headers: {
@@ -54,9 +61,5 @@ export function useListUsersApi({ page, perPage }: UseListUsersProps) {
     }
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, [page, perPage]);
-
-  return { users, loading, error, meta };
+  return { users, loading, error, meta, fetchUsers };
 }
