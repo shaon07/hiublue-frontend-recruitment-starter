@@ -1,6 +1,20 @@
 import { useEffect, useState } from "react";
 
-const useUserListApi = (search: string) => {
+interface Params {
+  page?: number;
+  per_page?: number;
+  search?: string;
+  type?: string;
+  status?: string;
+}
+
+const useUserListApi = ({
+  page = 1,
+  per_page = 5,
+  search = "",
+  type = "",
+  status = "",
+}: Params) => {
   const [users, setUsers] = useState<any[]>([]);
   const [meta, setMeta] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -15,11 +29,17 @@ const useUserListApi = (search: string) => {
         return;
       }
 
-      if (!search) return;
+      const queryParams = new URLSearchParams({
+        page: String(page),
+        per_page: String(per_page),
+        ...(search && { search }),
+        ...(type && { type }),
+        ...(status && { status }),
+      }).toString();
 
       try {
         const response = await fetch(
-          `https://dummy-1.hiublue.com/api/offers?search=${search}`,
+          `https://dummy-1.hiublue.com/api/offers?${queryParams}`,
           {
             method: "GET",
             headers: {
@@ -43,7 +63,7 @@ const useUserListApi = (search: string) => {
     };
 
     fetchUsers();
-  }, [search]);
+  }, [page, per_page, search, type, status]);
 
   return { users, meta, loading, error };
 };

@@ -1,17 +1,21 @@
 "use client";
 
-import { useListUsersApi } from "@/services/useListUsersApi";
+import useUserListApi from "@/services/useUserListApi";
 import { Edit, MoreVert } from "@mui/icons-material";
 import {
   Box,
   Card,
+  Chip,
   IconButton,
   MenuItem,
+  Tab,
+  Tabs,
   TextField,
   Typography,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
-import { useState } from "react";
+import { debounce } from "lodash";
+import { useEffect, useState } from "react";
 
 export default function OfferList() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,23 +24,72 @@ export default function OfferList() {
     page: 0,
     pageSize: 5,
   });
+  const [tabs, setTabs] = useState(0);
 
-  const { users, meta, loading } = useListUsersApi({
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabs(newValue);
+  };
+
+  const { users, meta, loading } = useUserListApi({
     page: paginationModel.page + 1,
-    perPage: paginationModel.pageSize,
+    per_page: paginationModel.pageSize,
+    search: searchTerm,
+    status: statusFilter !== "All" ? statusFilter : undefined,
   });
 
-  const filteredOffers = users.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase());
+  const handleSearchChange = debounce((value: string) => {
+    setSearchTerm(value);
+    setPaginationModel((prev) => ({ ...prev, page: 0 }));
+  }, 300);
 
-    return matchesSearch;
-  });
+  useEffect(() => {
+    setPaginationModel((prev) => ({ ...prev, page: 0 }));
+  }, [statusFilter]);
 
   const columns: GridColDef[] = [
-    { field: "name", headerName: "Name", flex: 1 },
-    { field: "email", headerName: "Email", flex: 1 },
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+      renderCell: (params) => (
+        <Box>
+          <Typography fontWeight={600}>{params.value}</Typography>
+          <Typography variant="body2" color="text.secondary">
+            {params.row.email}
+          </Typography>
+        </Box>
+      ),
+    },
+    { field: "phone", headerName: "Phone number", flex: 1 },
+    { field: "company", headerName: "Company", flex: 1 },
+    { field: "jobTitle", headerName: "Job Title", flex: 1 },
+    { field: "type", headerName: "Type", flex: 1 },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 1,
+      renderCell: (params) => {
+        let variant = "primary";
+        switch (params.value) {
+          case "accepted":
+            variant = "success";
+            break;
+          case "rejected":
+            variant = "error";
+            break;
+          case "pending":
+            variant = "success";
+            break;
+          default:
+            variant = "primary";
+        }
+        return (
+          <Box>
+            <Chip label={params.value} color={variant as any} size="small" />
+          </Box>
+        );
+      },
+    },
     {
       field: "actions",
       headerName: "Actions",
@@ -58,16 +111,32 @@ export default function OfferList() {
   return (
     <Card sx={{ p: 3, width: "100%", overflowX: "auto" }}>
       <Typography variant="h6" fontWeight={600}>
-        User List
+        Offer List
       </Typography>
+
+      <Tabs
+        value={tabs}
+        onChange={(e, value) => {
+          handleTabChange(e, value);
+          setStatusFilter(value === 0 ? "All" : "Accepted");
+        }}
+        textColor="inherit"
+        sx={{
+          "& .MuiTabs-indicator": {
+            backgroundColor: "black",
+          },
+        }}
+      >
+        <Tab label="All" />
+        <Tab label="Accepted" />
+      </Tabs>
 
       <Box display="flex" gap={2} my={2} alignItems="center">
         <TextField
           variant="outlined"
           size="small"
           placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => handleSearchChange(e.target.value)}
           sx={{ width: "30%" }}
         />
         <TextField
@@ -85,7 +154,16 @@ export default function OfferList() {
       </Box>
 
       <DataGrid
-        rows={filteredOffers}
+        rows={users.map((user) => ({
+          id: user.id,
+          name: user.user_name,
+          email: user.email,
+          phone: user.phone,
+          company: user.company,
+          jobTitle: user.jobTitle,
+          type: user.type,
+          status: user.status,
+        }))}
         columns={columns}
         rowCount={meta?.total}
         loading={loading}
