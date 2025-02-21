@@ -1,3 +1,4 @@
+import { API_URL } from "@/constants";
 import { useState } from "react";
 
 interface OfferPayload {
@@ -27,7 +28,7 @@ const useCreateOffer = () => {
     }
 
     try {
-      const response = await fetch("https://dummy-1.hiublue.com/api/offers", {
+      const response = await fetch(`${API_URL}/offers`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

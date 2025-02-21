@@ -1,3 +1,4 @@
+import { API_URL } from "@/constants";
 import { useState } from "react";
 
 interface DashboardData {
@@ -20,7 +21,7 @@ export const useSummeryApi = (): DashboardData => {
       const myHeaders = new Headers();
       myHeaders.append("Authorization", "Bearer fake-jwt-token");
 
-      const url = new URL("https://dummy-1.hiublue.com/api/dashboard/summary");
+      const url = new URL(`${API_URL}/dashboard/summary`);
       url.searchParams.append("filter", filter);
 
       const requestOptions: RequestInit = {

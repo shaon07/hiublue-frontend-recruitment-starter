@@ -1,3 +1,4 @@
+import { API_URL } from "@/constants";
 import { useState } from "react";
 
 interface User {
@@ -36,7 +37,7 @@ export function useListUsersApi() {
 
     try {
       const response = await fetch(
-        `https://dummy-1.hiublue.com/api/users?page=${page}&per_page=${perPage}${
+        `${API_URL}/users?page=${page}&per_page=${perPage}${
           search ? `&search=${search}` : ""
         }`,
         {

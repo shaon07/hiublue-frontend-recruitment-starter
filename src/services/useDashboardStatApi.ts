@@ -1,3 +1,4 @@
+import { API_URL } from "@/constants";
 import { useCallback, useState } from "react";
 
 interface UseDashboardStatResult {
@@ -25,7 +26,7 @@ export const useDashboardStatApi = (): UseDashboardStatResult => {
 
     try {
       const response = await fetch(
-        `https://dummy-1.hiublue.com/api/dashboard/stat?filter=${filter}`,
+        `${API_URL}/dashboard/stat?filter=${filter}`,
         {
           method: "GET",
           headers: {

@@ -1,6 +1,7 @@
 "use client";
 
 import { FormData, loginValidationSchema } from "@/schema/login.schema";
+import { useLogin } from "@/services/useLoginApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -17,7 +18,6 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -61,37 +61,10 @@ export default function SignIn() {
   } = useForm<FormData>({
     resolver: zodResolver(loginValidationSchema),
   });
-
-  const [loading, setLoading] = React.useState(false);
-  const [apiError, setApiError] = React.useState<string | null>(null);
+  const { apiError, login, loading } = useLogin();
 
   const onSubmit = async (data: FormData) => {
-    setLoading(true);
-    setApiError(null);
-
-    try {
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-
-      const response = await fetch("https://dummy-1.hiublue.com/api/login", {
-        method: "POST",
-        headers: myHeaders,
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || "Invalid email or password");
-      }
-
-      localStorage.setItem("token", result.token);
-      window.location.href = "/";
-    } catch (error: any) {
-      setApiError(error.message || "Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    await login(data);
   };
 
   return (

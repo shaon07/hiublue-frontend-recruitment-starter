@@ -1,3 +1,4 @@
+import { API_URL } from "@/constants";
 import { useEffect, useState } from "react";
 
 interface Params {
@@ -38,15 +39,12 @@ const useUserListApi = ({
       }).toString();
 
       try {
-        const response = await fetch(
-          `https://dummy-1.hiublue.com/api/offers?${queryParams}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`${API_URL}/offers?${queryParams}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error("Failed to fetch offers");
