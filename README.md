@@ -1,103 +1,92 @@
-## **Overview**
+## Introduction
 
-First of all, congratulations on being shortlisted for the Frontend Developer position at hiublue! 🎉 As part of the selection process, we have designed a challenge to assess your skills in **Next.js, TypeScript, MUI, API handling, code structure and frontend architecture**.
+This project is built using **Next.js** and **TypeScript**, offering a fast and scalable web application. The project is set up with strict type-checking and modern JavaScript features to ensure a robust development experience.
 
-You will be provided with a **starter repository** that includes the basic project setup. Your task is to build a functional admin portal with authentication, data visualization on dashboard, basic onboarding offer functionality while integrating API.
+---
 
-We are providing:
+## Technologies Used
 
-- [**Figma design link**](https://www.figma.com/design/p4aO5zxiLUkws5DDTTWP92/Untitled?node-id=0-1&t=oePPLG5LIUguMtQy-1)
-- [**Postman collection**](https://documenter.getpostman.com/view/8605001/2sAYXFiHWQ)
+- **Next.js**: A React framework for building optimized and production-ready web applications.
+- **TypeScript**: A superset of JavaScript that adds static types.
+- **React**: A JavaScript library for building user interfaces.
+- **Material-UI**: A set of React components that implement Google's Material Design.
 
-## **Tech Stack**
+---
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **UI Library:** Material UI (MUI)
-- **Form Handling:** React Hook Form (Use validation like yup or zod)
-- **Charting:** ApexCharts
-- **State Management:** Context API and LocalStorage
-- **Version Control:** GitHub (Fork the repo and maintain clean commits)
-- **Deployment:** Vercel
+## Installation
 
-## **Requirements**
+Follow these steps to get the project up and running:
 
-### **1. Authentication**
+1. Clone the repository to your local machine.
 
-- A login page will be already there, you have to implement the api first.
-- Store authentication state using **Context API and LocalStorage**.
-- Make sure no unauthorized user has access to the dashboard or any other routes.
-- Show different layouts for **authenticated vs. non-authenticated users**.
+   ```bash
+   git clone <repository-url>
+   ```
 
-### **2. Admin Dashboard**
+2. Navigate to the project folder.
 
-- Fetch **real-time data** from the provided API.
-- Display the data in an table with:
-  - Pagination
-  - Searching
-  - Filtering
-- Show **charts** based on API data using **ApexCharts**.
+   ```bash
+   cd <project-folder>
+   ```
 
-### **3. Sending Onboarding Offer**
+3. Install the dependencies.
 
-- Implement a **separate page** where the admin can send onboarding offers to new users.
-- Allow the admin to **select a user** from a list and fill in additional fields. Do use Mui Autocomplete component. Instead of pulling all users, perform searching using api.
-- Using **React Hook Form** is preferred but not mandatory.
-- Validate the data before submitting using packages like yup and zod.
+   ```bash
+   npm install
+   ```
 
-### **4. Git & Code Structure**
+4. Once the installation is complete, you're ready to run the project.
 
-- Follow a **clean Git workflow** (feature branches, meaningful commit messages).
-- Write **modular, reusable, and well-structured** code.
-- Ensure **proper TypeScript typings** throughout the project.
+---
 
-### **5. Responsive design**
+## Running the Project
 
-- The application should be responsive, adapting seamlessly to different screen sizes without compromising or design integrity.
+To run the project locally, follow these steps:
 
-### **6. Readme File**
+1. **Start the development server**:
 
-- Include a **README** file that provides clear instructions on how to set up, run and test the application
+   ```bash
+   npm run dev
+   ```
 
-### **7. Deployment**
+   This will start the Next.js development server, and you can view your application at `http://localhost:3000`.
 
-- **Deploy the project to Vercel** and provide the link.
+2. **Build the project for production**:
 
-## **How to Start**
+   ```bash
+   npm run build
+   ```
 
-1. **Fork the starter repository** (link will be provided).
-2. Clone your fork and install dependencies:
+   This will build the project and optimize it for production. The optimized version will be available in the `.next` folder.
 
-```bash
-git clone YOUR_FORKED_REPO
-cd YOUR_PROJECT
-npm install
-```
+3. **Run the production server**:
 
-1. Once completed, **push your changes.**
+   ```bash
+   npm start
+   ```
 
-## **Submission Requirements**
+   This will start the server to serve the production build.
 
-- **GitHub Repository Link** (structured with a README file).
-- **Live Deployment Link**
+---
 
-## **Evaluation Criteria**
+## Development Workflow
 
-| **Category** | **Evaluation Criteria** |
-| --- | --- |
-| **Code Quality** | Readability, structure, component-based approach |
-| **TypeScript Usage** | Proper typing of components, hooks, data types, API responses |
-| **API Handling** | Proper usage of necessary caching, error handling |
-| **UI & UX** | Clean UI, responsiveness, MUI usage, adherence to Figma design. Using MUI is a must. |
-| **Authentication** | Token-based authentication, proper auth state management using Context API & LocalStorage |
-| **Table Features** | Proper implementation of pagination, searching using. |
-| **Form Handling** | Correct usage of React Hook Form and proper validation |
-| **Onboarding Offer** | Ability to select users, send onboarding requests |
-| **Error & Success Messages** | Proper display of validation errors and success messages |
-| **Git Practices** | Clean commits, meaningful messages, proper branching |
+- **Editing Files**: You can edit the TypeScript files in the `src/` folder. Next.js will automatically reload the server to reflect changes.
+- **Linting**: The project uses strict TypeScript settings for type safety. If you want to check for linting issues, you can run:
 
-## **Deadline**
+  ```bash
+  npm run lint
+  ```
 
-You have **4 days** to complete this challenge.
+- **Testing**: You can add tests to your project using testing libraries such as Jest or React Testing Library. The project doesn't come preconfigured with testing libraries, so you can set them up as needed.
 
-Good luck!
+---
+
+## Common Commands
+
+- **Start the development server**: `npm run dev`
+- **Build the project**: `npm run build`
+- **Run the production build**: `npm start`
+- **Run the linter**: `npm run lint`
+
+---
