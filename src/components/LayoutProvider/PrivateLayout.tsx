@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import SidebarMenuList from "../shared/SidebarMenuList";
 
 const drawerWidth = 240;
@@ -47,7 +47,7 @@ export default function PrivateLayout({
     handleMenuClose();
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isAuthenticated) {
       router.push("/login");
     }
