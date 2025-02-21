@@ -45,7 +45,7 @@ export default function BarChart({ website_visits }: BarChartProps) {
   ];
 
   return (
-    <Card sx={{ flex: 1, p: 2, minWidth: 300 }}>
+    <Card sx={{ flex: 1, p: 2, width: "100%" }}>
       <Typography fontWeight={600}>Website visits</Typography>
       <Chart options={barOptions} series={barSeries} type="bar" height={250} />
     </Card>

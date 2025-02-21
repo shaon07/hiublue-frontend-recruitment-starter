@@ -165,7 +165,7 @@ export default function OfferList() {
           status: user.status,
         }))}
         columns={columns}
-        rowCount={meta?.total}
+        rowCount={meta?.total || 1}
         loading={loading}
         pageSizeOptions={[5, 10, 20]}
         paginationModel={paginationModel}

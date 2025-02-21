@@ -1,7 +1,13 @@
 import { List, ListItemButton, ListItemText } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { DashBoardIcon, OnBoardIcon } from "../iconify/iconify";
 
-export default function SidebarMenuList() {
+type SidebarMenuListProps = {
+  onSelect?: (data?: string) => void;
+};
+export default function SidebarMenuList({
+  onSelect = () => {},
+}: SidebarMenuListProps) {
   const router = useRouter();
   return (
     <List>
@@ -11,25 +17,12 @@ export default function SidebarMenuList() {
           alignItems: "center",
           gap: 1,
         }}
-        onClick={() => router.push("/")}
+        onClick={() => {
+          router.push("/");
+          onSelect("dashboard");
+        }}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            opacity="0.32"
-            d="M21.1808 16.9703C20.8971 17.6255 20.2225 18 19.5086 18H14.8154C14.8462 17.9145 14.8735 17.8269 14.8971 17.7373C15.1709 16.6974 14.8825 15.639 14.2214 14.8963C14.4654 12.9091 14.6177 10.8733 14.7108 9.26516C14.7569 8.46731 13.7795 8.20081 13.4274 8.91526C12.7178 10.3553 11.8493 12.1958 11.0842 14.041C10.1467 14.3479 9.3768 15.1177 9.10295 16.1576C8.93642 16.7899 8.97782 17.4291 9.18451 18H4.49141C3.77747 18 3.10288 17.6255 2.81918 16.9703C2.29212 15.7533 2 14.4108 2 13C2 7.47715 6.47715 3 12 3C17.5229 3 22 7.47715 22 13C22 14.4108 21.7079 15.7533 21.1808 16.9703Z"
-            fill="#637381"
-          />
-          <path
-            d="M14.7108 9.26516C14.7569 8.46731 13.7795 8.20081 13.4274 8.91526C12.7178 10.3553 11.8493 12.1958 11.0842 14.041C10.1467 14.3479 9.3768 15.1177 9.10295 16.1576C8.6742 17.7856 9.62375 19.459 11.2238 19.8953C12.8238 20.3315 14.4684 19.3654 14.8971 17.7373C15.1709 16.6974 14.8825 15.639 14.2214 14.8963C14.4654 12.9091 14.6177 10.8733 14.7108 9.26516Z"
-            fill="#637381"
-          />
-        </svg>
+        <DashBoardIcon />
         <ListItemText primary="Dashboard" />
       </ListItemButton>
 
@@ -39,31 +32,12 @@ export default function SidebarMenuList() {
           alignItems: "center",
           gap: 1,
         }}
-        onClick={() => router.push("/onboarding")}
+        onClick={() => {
+          router.push("/onboarding");
+          onSelect("onboarding");
+        }}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            opacity="0.32"
-            d="M4.32992 6C3.84871 6 3.43524 6.34385 3.34854 6.8172C1.98294 14.2724 1.75 18 1.75 18H22.25C22.25 18 22.017 14.2724 20.6514 6.8172C20.5647 6.34385 20.1513 6 19.67 6H4.32992Z"
-            fill="#637381"
-          />
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M22.25 18H1.75C1.75 18 1.75 18.695 1.80122 19.6754C1.87282 21.0459 2.95622 22.0861 4.32766 22.138C5.855 22.1959 8.2782 22.25 12 22.25C15.7218 22.25 18.145 22.1959 19.6723 22.138C21.0438 22.0861 22.1272 21.0459 22.1988 19.6754C22.25 18.695 22.25 18 22.25 18Z"
-            fill="#637381"
-          />
-          <path
-            d="M12 1C9.2386 1 7 3.23857 7 6H9C9 4.34314 10.3432 3 12 3C13.6568 3 15 4.34314 15 6H17C17 3.23857 14.7614 1 12 1Z"
-            fill="#637381"
-          />
-        </svg>
+        <OnBoardIcon />
         <ListItemText primary="Onboarding" />
       </ListItemButton>
     </List>

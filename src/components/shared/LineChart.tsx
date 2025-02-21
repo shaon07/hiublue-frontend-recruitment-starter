@@ -21,7 +21,7 @@ export default function LineChart({ data }: ChartProps) {
   const lineSeries = [{ name: "Offers", data: Object.values(data) }];
 
   return (
-    <Card sx={{ flex: 1, p: 2, minWidth: 300 }}>
+    <Card sx={{ flex: 1, p: 2, width: "100%" }}>
       <Typography fontWeight={600}>Offers sent</Typography>
       <Chart
         options={lineOptions}

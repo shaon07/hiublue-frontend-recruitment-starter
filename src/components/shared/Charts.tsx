@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { useDashboardStatApi } from "@/services/useDashboardStatApi";
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useEffect } from "react";
 import BarChart from "./BarChart";
 import LineChart from "./LineChart";
@@ -18,12 +18,20 @@ export default function Charts() {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <Box display="flex" flexWrap="wrap" gap={3}>
-      {data?.website_visits && (
-        <BarChart website_visits={data.website_visits} />
-      )}
+    <Box>
+      <Grid container spacing={3}>
+        {data?.website_visits && (
+          <Grid item xs={12} sm={6} md={6}>
+            <BarChart website_visits={data.website_visits} />
+          </Grid>
+        )}
 
-      {data?.offers_sent && <LineChart data={data.offers_sent} />}
+        {data?.offers_sent && (
+          <Grid item xs={12} sm={6} md={6}>
+            <LineChart data={data.offers_sent} />
+          </Grid>
+        )}
+      </Grid>
     </Box>
   );
 }

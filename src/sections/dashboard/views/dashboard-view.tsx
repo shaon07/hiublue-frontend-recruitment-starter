@@ -28,6 +28,7 @@ export default function DashboardView() {
 
         <MultipleSelect />
       </Box>
+
       <SummeryCardsSection />
 
       <Box
